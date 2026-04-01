@@ -196,3 +196,68 @@ print(f"Subtotal: ₹{subtotal:.2f}")
 print(f"GST (5%): ₹{gst:.2f}")
 print(f"Total Payable: ₹{total:.2f}")
 print("===================================")
+
+
+
+# ---------------- TASK 3: INVENTORY TRACKER ----------------
+
+import copy
+
+print("\n===== INVENTORY BACKUP =====")
+
+# Step 1: Deep copy
+inventory_backup = copy.deepcopy(inventory)
+
+# Modify one value to prove deep copy
+inventory["Paneer Tikka"]["stock"] -= 2
+
+print("\nModified Inventory:")
+print(inventory["Paneer Tikka"])
+
+print("\nBackup Inventory (should be unchanged):")
+print(inventory_backup["Paneer Tikka"])
+
+# Restore inventory
+inventory = copy.deepcopy(inventory_backup)
+
+print("\nInventory restored.")
+
+
+# ---------------- ORDER FULFILLMENT ----------------
+
+print("\n===== ORDER FULFILLMENT =====")
+
+for item in cart:
+    name = item["item"]
+    quantity = item["quantity"]
+
+    if name in inventory:
+        stock = inventory[name]["stock"]
+
+        if stock >= quantity:
+            inventory[name]["stock"] -= quantity
+        else:
+            print(f"Warning: Not enough stock for {name}. Only {stock} available.")
+            inventory[name]["stock"] = 0
+
+
+# ---------------- REORDER ALERT ----------------
+
+print("\n===== REORDER ALERTS =====")
+
+for item, details in inventory.items():
+    if details["stock"] <= details["reorder_level"]:
+        print(f"⚠ Reorder Alert: {item} — Only {details['stock']} unit(s) left (reorder level: {details['reorder_level']})")
+
+
+# ---------------- FINAL CHECK ----------------
+
+print("\n===== FINAL INVENTORY VS BACKUP =====")
+
+print("\nCurrent Inventory (sample):")
+for item in list(inventory.keys())[:3]:
+    print(item, inventory[item])
+
+print("\nBackup Inventory (sample):")
+for item in list(inventory_backup.keys())[:3]:
+    print(item, inventory_backup[item])
