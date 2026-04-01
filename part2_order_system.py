@@ -44,3 +44,53 @@ sales_log = {
         {"order_id": 10, "items": ["Paneer Tikka", "Gulab Jamun"],          "total": 270.0},
     ],
 }
+
+
+# ---------------- TASK 1: EXPLORE MENU ----------------
+
+print("\n===== MENU =====")
+
+# Get unique categories
+categories = set()
+for item in menu:
+    categories.add(menu[item]["category"])
+
+# Loop through each category
+for category in categories:
+    print(f"\n===== {category} =====")
+
+    # Loop through menu items
+    for item, details in menu.items():
+        if details["category"] == category:
+            price = details["price"]
+            availability = "Available" if details["available"] else "Unavailable"
+
+            print(f"{item}  ₹{price:.2f}  [{availability}]")
+
+# ---------------- SUMMARY ----------------
+
+# Total items
+total_items = len(menu)
+
+# Available items
+available_items = sum(1 for item in menu if menu[item]["available"])
+
+# Most expensive item
+most_expensive = max(menu.items(), key=lambda x: x[1]["price"])
+most_exp_name = most_expensive[0]
+most_exp_price = most_expensive[1]["price"]
+
+# Items under ₹150
+under_150 = []
+for item, details in menu.items():
+    if details["price"] < 150:
+        under_150.append((item, details["price"]))
+
+print("\n----- SUMMARY -----")
+print(f"Total items: {total_items}")
+print(f"Available items: {available_items}")
+print(f"Most expensive: {most_exp_name} (₹{most_exp_price})")
+
+print("\nItems under ₹150:")
+for item, price in under_150:
+    print(f"{item} (₹{price})")
