@@ -261,3 +261,65 @@ for item in list(inventory.keys())[:3]:
 print("\nBackup Inventory (sample):")
 for item in list(inventory_backup.keys())[:3]:
     print(item, inventory_backup[item])
+
+
+
+# ---------------- TASK 4: SALES LOG ANALYSIS ----------------
+
+print("\n===== DAILY REVENUE =====")
+
+# 1. Total revenue per day
+daily_revenue = {}
+
+for date, orders in sales_log.items():
+    total = sum(order["total"] for order in orders)
+    daily_revenue[date] = total
+    print(f"{date}: ₹{total:.2f}")
+
+
+# 2. Best-selling day
+best_day = max(daily_revenue, key=daily_revenue.get)
+print(f"\nBest-selling day: {best_day} (₹{daily_revenue[best_day]:.2f})")
+
+
+# 3. Most ordered item
+item_count = {}
+
+for orders in sales_log.values():
+    for order in orders:
+        for item in order["items"]:
+            item_count[item] = item_count.get(item, 0) + 1
+
+most_ordered = max(item_count, key=item_count.get)
+print(f"Most ordered item: {most_ordered} ({item_count[most_ordered]} times)")
+
+
+# 4. Add new day
+sales_log["2025-01-05"] = [
+    {"order_id": 11, "items": ["Butter Chicken", "Gulab Jamun", "Garlic Naan"], "total": 490.0},
+    {"order_id": 12, "items": ["Paneer Tikka", "Rasgulla"], "total": 260.0},
+]
+
+print("\n===== UPDATED DAILY REVENUE =====")
+
+daily_revenue = {}
+
+for date, orders in sales_log.items():
+    total = sum(order["total"] for order in orders)
+    daily_revenue[date] = total
+    print(f"{date}: ₹{total:.2f}")
+
+best_day = max(daily_revenue, key=daily_revenue.get)
+print(f"\nUpdated best-selling day: {best_day} (₹{daily_revenue[best_day]:.2f})")
+
+
+# 5. Numbered list of all orders
+print("\n===== ALL ORDERS =====")
+
+counter = 1
+
+for date, orders in sales_log.items():
+    for order in orders:
+        items_str = ", ".join(order["items"])
+        print(f"{counter}. [{date}] Order #{order['order_id']} — ₹{order['total']:.2f} — Items: {items_str}")
+        counter += 1
